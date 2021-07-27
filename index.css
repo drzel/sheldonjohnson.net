@@ -1,0 +1,29 @@
+body {
+	body {
+		color: default;
+		background: default;
+	}
+
+	body a {
+		color: default;
+	}
+
+	body a:visited {
+		color: default;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		color: white;
+		background: #222;
+	}
+
+	body a {
+		color: lightskyblue;
+	}
+
+	body a:visited {
+		color: slateblue;
+	}
+}
