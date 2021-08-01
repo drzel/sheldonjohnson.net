@@ -1,16 +1,16 @@
 body {
-	body {
-		color: default;
-		background: default;
-	}
+	color: default;
+	background: default;
+	max-width: 1024px;
+	margin: auto;
+}
 
-	body a {
-		color: default;
-	}
+a {
+	color: default;
+}
 
-	body a:visited {
-		color: default;
-	}
+a:visited {
+	color: default;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,11 +19,11 @@ body {
 		background: #222;
 	}
 
-	body a {
+	a {
 		color: lightskyblue;
 	}
 
-	body a:visited {
+	a:visited {
 		color: slateblue;
 	}
 }
