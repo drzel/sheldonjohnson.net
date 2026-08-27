@@ -93,7 +93,7 @@ body {
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
 <link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
 <link rel="manifest" href="index.manifest.json">
-<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('index.service.worker.js').then(function(reg){function watch(w){if(!w)return;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller){w.postMessage('update');}});}watch(reg.installing);reg.addEventListener('updatefound',function(){watch(reg.installing);});if(reg.waiting&&navigator.serviceWorker.controller){reg.waiting.postMessage('update');}});}</script>
+<script src='peerjs.min.js'></script><script src='ffnet.js'></script><script>if('serviceWorker' in navigator){navigator.serviceWorker.register('index.service.worker.js').then(function(reg){function watch(w){if(!w)return;w.addEventListener('statechange',function(){if(w.state==='installed'&&navigator.serviceWorker.controller){w.postMessage('update');}});}watch(reg.installing);reg.addEventListener('updatefound',function(){watch(reg.installing);});if(reg.waiting&&navigator.serviceWorker.controller){reg.waiting.postMessage('update');}});}</script>
 	</head>
 	<body>
 		<canvas id="canvas">
@@ -112,7 +112,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":175680,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":186240,"index.wasm":39513091},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
