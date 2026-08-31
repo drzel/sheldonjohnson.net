@@ -23,6 +23,7 @@
 		code: '',
 		_peer: null,
 		_conn: null,
+		_fast: null, // second channel, unordered: snapshots and input ride here
 		_queue: [],
 
 		_newCode: function () {
@@ -31,7 +32,23 @@
 			return s;
 		},
 
+		_adoptFast: function (conn) {
+			net._fast = conn;
+			conn.on('data', function (d) {
+				if (net._queue.length >= QUEUE_MAX) net._queue.shift();
+				net._queue.push(String(d));
+			});
+			conn.on('close', function () { if (net._fast === conn) net._fast = null; });
+			conn.on('error', function () { if (net._fast === conn) net._fast = null; });
+		},
+
 		_adopt: function (conn) {
+			if (conn.label === 'fast') {
+				// the fast lane of the CURRENT opponent; anyone else's is refused
+				if (net._conn && conn.peer === net._conn.peer) net._adoptFast(conn);
+				else { try { conn.close(); } catch (e) {} }
+				return;
+			}
 			if (net._conn) {
 				// lobby already has an opponent: let the extra joiner's channel
 				// open, tell them the game is full, then hang up — a silent close
@@ -114,7 +131,12 @@
 			try {
 				var peer = net._mkpeer(null, 0);
 				peer.on('open', function () {
-					net._adopt(peer.connect(PREFIX + code, { reliable: true }));
+					var main = peer.connect(PREFIX + code, { reliable: true });
+					net._adopt(main);
+					main.on('open', function () {
+						// unordered fast lane: a late packet never holds up the rest
+						net._adoptFast(peer.connect(PREFIX + code, { reliable: false, label: 'fast' }));
+					});
 				});
 			} catch (e) {
 				net.status = 'error:networking unavailable';
@@ -125,6 +147,14 @@
 			try { if (net._conn && net._conn.open) net._conn.send(s); } catch (e) {}
 		},
 
+		sendFast: function (s) {
+			// high-rate traffic: the unordered lane if it's up, else the main one
+			try {
+				if (net._fast && net._fast.open) net._fast.send(s);
+				else if (net._conn && net._conn.open) net._conn.send(s);
+			} catch (e) {}
+		},
+
 		drain: function () {
 			if (net._queue.length === 0) return '[]';
 			return JSON.stringify(net._queue.splice(0));
@@ -133,6 +163,7 @@
 		close: function () {
 			// flush the channel before tearing the peer down, so a final "bye"
 			// actually leaves the wire instead of dying in the send buffer
+			try { if (net._fast && net._fast.open) net._fast.close(); } catch (e) {}
 			try { if (net._conn && net._conn.open) net._conn.close({ flush: true }); } catch (e) {}
 			var p = net._peer;
 			if (p) {
@@ -140,6 +171,7 @@
 			}
 			net._peer = null;
 			net._conn = null;
+			net._fast = null;
 			net._queue = [];
 			net.status = 'idle';
 			net.code = '';
