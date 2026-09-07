@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1788749811|2888101';
+const CACHE_VERSION = '1788752523|3016291';
 /** @type {string} */
 const CACHE_PREFIX = 'Foundation Footy-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
@@ -159,7 +159,7 @@ self.addEventListener('message', (event) => {
 		} else if (msg === 'clear') {
 			caches.delete(CACHE_NAME);
 		} else if (msg === 'update') {
-			self.skipWaiting().then(() => self.clients.claim()).then(() => self.clients.matchAll()).then((all) => all.forEach((c) => c.navigate(c.url)));
+			self.skipWaiting().then(() => self.clients.claim());
 		}
 	});
 });
