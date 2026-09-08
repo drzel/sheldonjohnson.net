@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1788865055|3023143';
+const CACHE_VERSION = '1788866319|3162501';
 /** @type {string} */
 const CACHE_PREFIX = 'Foundation Footy-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
